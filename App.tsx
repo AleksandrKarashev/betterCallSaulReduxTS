@@ -1,22 +1,26 @@
-import { StatusBar } from 'expo-status-bar';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import React from 'react';
+import { SafeAreaView, StyleSheet } from 'react-native';
+import { Provider } from 'react-redux';
+import Main from './Main';
 
-import useCachedResources from './hooks/useCachedResources';
-import useColorScheme from './hooks/useColorScheme';
-import Navigation from './navigation';
+import configureStore from './src/store/configureStore';
 
-export default function App() {
-  const isLoadingComplete = useCachedResources();
-  const colorScheme = useColorScheme();
+const store = configureStore();
 
-  if (!isLoadingComplete) {
-    return null;
-  } else {
-    return (
-      <SafeAreaProvider>
-        <Navigation colorScheme={colorScheme} />
-        <StatusBar />
-      </SafeAreaProvider>
-    );
-  }
-}
+const App: React.FC = () => (
+   <Provider store={store}>
+      <SafeAreaView style={styles.safeAreaView}>
+         <Main />
+      </SafeAreaView>
+   </Provider>
+)
+
+const styles = StyleSheet.create({
+   safeAreaView: {
+      flex: 1,
+      justifyContent: 'center',
+      backgroundColor: "rgba(0, 0, 255, 0.5)",
+   },
+});
+
+export default App;
